@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int countDigitOne(int n) {
+        long long count = 0;
+        
+        for (long long i = 1; i <= n; i *= 10) {
+            long long divider = i * 10;
+            
+          
+            int high = n / divider;
+            int curr = (n / i) % 10;
+            int low = n % i;
+            
+            if (curr == 0) {
+                count += (long long)high * i;
+            } else if (curr == 1) {
+                count += (long long)high * i + (low + 1);
+            } else {
+                count += (long long)(high + 1) * i;
+            }
+        }
+        return (int)count;
+    }
+};
