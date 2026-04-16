@@ -1,0 +1,47 @@
+#include <vector>
+#include <unordered_map>
+#include <string>
+#include <algorithm>
+#include <numeric>
+
+using namespace std;
+
+class Solution {
+public:
+    int maxPoints(vector<vector<int>>& points) {
+        int n = points.size();
+        if (n <= 2) return n;
+
+        int globalMax = 0;
+
+        for (int i = 0; i < n; i++) {
+            unordered_map<string, int> slopeMap;
+            int localMax = 0;
+            
+            for (int j = i + 1; j < n; j++) {
+                int dx = points[j][0] - points[i][0];
+                int dy = points[j][1] - points[i][1];
+
+                // Normalize the slope using GCD
+                int common = gcd(dx, dy);
+                dx /= common;
+                dy /= common;
+
+                // Create a unique string key for the slope (dy/dx)
+                string slope = to_string(dy) + "/" + to_string(dx);
+                slopeMap[slope]++;
+                localMax = max(localMax, slopeMap[slope]);
+            }
+            // Add 1 to include the current starting point 'i'
+            globalMax = max(globalMax, localMax + 1);
+        }
+
+        return globalMax;
+    }
+
+private:
+    // Helper function for GCD (built-in std::gcd is available in C++17)
+    int gcd(int a, int b) {
+        return b == 0 ? a : gcd(b, a % b);
+    }
+};
