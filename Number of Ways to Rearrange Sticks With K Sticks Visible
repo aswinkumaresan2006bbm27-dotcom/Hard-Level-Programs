@@ -1,0 +1,27 @@
+#include <vector>
+#include <iostream>
+
+class Solution {
+public:
+    int rearrangeSticks(int n, int k) {
+        std::vector<std::vector<long long>> dp(n + 1, std::vector<long long>(k + 1, 0));
+        long long MOD = 1e9 + 7;
+        
+        dp[0][0] = 1; 
+        
+        for (int i = 1; i <= n; ++i) {
+           
+            for (int j = 1; j <= std::min(i, k); ++j) {
+              
+                long long hidden = (dp[i - 1][j] * (i - 1)) % MOD;
+                
+           
+                long long visible = dp[i - 1][j - 1];
+                
+                dp[i][j] = (hidden + visible) % MOD;
+            }
+        }
+        
+        return dp[n][k];
+    }
+};
